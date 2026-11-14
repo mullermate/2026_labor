@@ -1,17 +1,37 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import random
 
 def dobas():
-    szam = random.randint(1, 6)
-    dobas_eredmenye.config(text=szam)
+    try:
+        db = int(dobas_szam.get())
+    except ValueError:
+        messagebox.showerror('hiba', 'Nem sikerül számmá átalakítani!')
+        return
+
+    if not 1 <= db <= 10000:
+        messagebox.showerror('Hiba', 'A dobások számának 1 és 10000 közé kell esnie!')
+        return
+
+    eredmenyek = {i: 0 for i in range(1, 7)}
+    for _ in range(db):
+        dobott_ertek = random.randint(1, 6)
+        eredmenyek[dobott_ertek] +=1
+
+    szoveg = '\n'.join(f'{oldal}. = {darab}' for oldal, darab in eredmenyek.items())
+
+    dobas_eredmenye.config(text=szoveg)
+
+class Kockadobas:
+    def __init__(self, root: {destroy}):
+        self.root = root
+        self.root.title('Kockázás')
+
 
 root = tk.Tk()
 root.title("Kockázás")
 root.geometry("600x400")
-#root.minsize(500, 300)
-#root.maxsize(800, 500)
-#root.resizable(False, False)
+
 
 cim_cimke = ttk.Label(text='Kockajáték',font='Arial 16 bold')
 cim_cimke.grid(row=0, column=1, padx=10, pady=10)
